@@ -1,0 +1,52 @@
+# Complete Project Details: https://RandomNerdTutorials.com/raspberry-pi-detect-motion-pir-python/
+
+import RPi.GPIO as GPIO
+from gpiozero import MotionSensor
+from signal import pause
+
+
+pir = MotionSensor(18)
+RGB_Lamp = 19
+
+GPIO.setmode(GPIO.BCM)
+GPIO.setup(RGB_Lamp, GPIO.OUT)
+GPIO.setup(22, GPIO.OUT)
+
+def motion_function():
+    print("Motion Detected")
+    GPIO.output(RGB_Lamp, GPIO.HIGH)
+    GPIO.output(22, GPIO.HIGH)
+
+def no_motion_function():
+    print("Motion stopped")
+    GPIO.output(RGB_Lamp, GPIO.LOW)
+    G# Complete Project Details: https://RandomNerdTutorials.com/raspberry-pi-detect-motion-pir-python/
+
+import RPi.GPIO as GPIO
+from gpiozero import MotionSensor
+from signal import pause
+
+
+pir = MotionSensor(18)
+RGB_Lamp = 19
+
+GPIO.setmode(GPIO.BCM)
+GPIO.setup(RGB_Lamp, GPIO.OUT)
+GPIO.setup(22, GPIO.OUT)
+
+def motion_function():
+    print("Motion Detected")
+    GPIO.output(RGB_Lamp, GPIO.HIGH)
+    GPIO.output(22, GPIO.HIGH)
+
+def no_motion_function():
+    print("Motion stopped")
+    GPIO.output(RGB_Lamp, GPIO.LOW)
+    GPIO.output(22, GPIO.LOW)
+
+pir.when_motion = motion_function
+pir.when_no_motion = no_motion_function
+
+pause()
+
+
