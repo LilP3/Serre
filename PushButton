@@ -1,0 +1,49 @@
+# This Raspberry Pi code was developed by newbiely.com
+# This Raspberry Pi code is made available for public use without any restriction
+# For comprehensive instructions and wiring diagrams, please visit:
+# https://newbiely.com/tutorials/raspberry-pi/raspberry-pi-button-relay
+
+
+import RPi.GPIO as GPIO
+import time 
+
+# Constants won't change
+PushButton = 1  # The number of the pushbutton pin
+Hoofd_LED = 13     # The number of the relay pin
+Indicator_LED = 22
+
+# Variables will change
+relay_state = GPIO.LOW        # The current state of the relay
+prev_button_state = GPIO.LOW  # The previous state of the button
+button_state = GPIO.LOW  # The current state of the button
+
+# Set up GPIO
+GPIO.setmode(GPIO.BCM)  # Use BCM GPIO numbering
+GPIO.setup(Hoofd_LED, GPIO.OUT)           # Initialize the relay pin as an output
+GPIO.setup(Indicator_LED, GPIO.OUT)
+GPIO.setup(PushButton, GPIO.IN, pull_up_down=GPIO.PUD_UP)  # Initialize the pushbutton pin as a pull-up input
+
+try:
+    while True:
+        # Read the state of the pushbutton value
+        prev_button_state = button_state  # Save the last state
+        button_state = GPIO.input(PushButton)  # Read new state
+
+        if prev_button_state == GPIO.HIGH and button_state == GPIO.LOW:
+            time.sleep(0.2)  # 100 milliseconds debounce time
+            print("The button is pressed")
+
+            # Toggle the state of the relay
+            if relay_state == GPIO.LOW:
+                relay_state = GPIO.HIGH
+                GPIO.output(Indicator_LED, GPIO.LOW)
+            else:
+                relay_state = GPIO.LOW
+                GPIO.output(Indicator_LED, GPIO.HIGH)
+
+            # Control relay according to the toggled state
+            GPIO.output(Hoofd_LED, relay_state)
+
+except KeyboardInterrupt:
+    # Clean up GPIO on program exit
+    GPIO.cleanup()
